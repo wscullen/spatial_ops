@@ -6,6 +6,10 @@ Python module for working with MGRS and WRS2 tile grids. Can determine the list 
 
 This module is useful for generating tile id lists from an Area of Interest shapefile. See the `test_grid_intersect.py` file for usage examples.
 
+## Dependencies
+
+GDAL 2.2.*, GDAL Python bindings are required.
+
 ## Required Data Files
 
 This module relies on shapefiles for the WRS2 and MGRS grids to work. Download the data files from here:

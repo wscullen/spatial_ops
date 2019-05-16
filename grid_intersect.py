@@ -75,10 +75,22 @@ def get_wkt_from_shapefile(shp_path):
     for feature in in_layer:
         print(feature.GetGeometryRef().GetGeometryName())
         geom = feature.GetGeometryRef()
+        geom.FlattenTo2D()
         geom_type = geom.GetGeometryName()
 
         if geom_type == 'POLYGON':
-            multipoly.AddGeometry(feature.GetGeometryRef())
+            # print(feature.GetGeometryRef().Simplify(0.005).ConvexHull())
+            print(feature.GetGeometryRef().Simplify(0.005))
+            simplified_convex_hull = feature.GetGeometryRef().Simplify(0.005)
+
+            print(simplified_convex_hull)
+            
+            if simplified_convex_hull.GetGeometryName() == 'POLYGON':
+                print(simplified_convex_hull)
+                simplified_convex_hull.FlattenTo2D()
+                print(simplified_convex_hull)
+                multipoly.AddGeometry(simplified_convex_hull)
+
         elif geom_type == 'MULTIPOLYGON':
             for geom_part in geom:
                 if geom_part.GetGeometryName() == 'POLYGON':
@@ -88,6 +100,7 @@ def get_wkt_from_shapefile(shp_path):
                     print(geom_part.GetGeometryName())
 
     cascade_union = multipoly.UnionCascaded()
+    print(cascade_union)
 
     wkt_geometry = cascade_union.ExportToWkt()
 

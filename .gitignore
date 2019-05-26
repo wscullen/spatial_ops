@@ -2,3 +2,4 @@
 Pipfile.lock
 grid_files/
 test/data/
+__pycache__/

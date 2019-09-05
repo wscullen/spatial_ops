@@ -14,6 +14,6 @@ GDAL 2.2.*, GDAL Python bindings are required.
 
 This module relies on shapefiles for the WRS2 and MGRS grids to work. Download the data files from here:
 
-https://drive.google.com/file/d/1okNgc2V6ZTpWQOFZ-p_zNNa-sGaBwQtc/view?usp=sharing
+https://drive.google.com/open?id=1okNgc2V6ZTpWQOFZ-p_zNNa-sGaBwQtc
 
 Place the `grid_files` directory in the module root directory. Place the `data` directory in the `test` directory.

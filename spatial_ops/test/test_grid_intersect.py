@@ -5,7 +5,7 @@ import os
 import json
 import time
 
-import grid_intersect
+from .. import grid_intersect
 
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 GRID_DIR = Path(Path(os.path.abspath(__file__)).parent.parent, 'grid_files')

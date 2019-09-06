@@ -463,9 +463,9 @@ def find_mgrs_gzd_intersections(wkt_footprint):
 
     polygon_geom = ogr.CreateGeometryFromWkt(wkt_footprint)
 
-    mgrs_grid_file_dir = Path(GRID_DIR, "MGRS_100kmSQ_ID")
+    mgrs_grid_file_dir = Path(GRID_DIR, "MGRS_S2")
 
-    mgrs_master_shp_file = Path(mgrs_grid_file_dir, "mgrs_gzd_final.shp")
+    mgrs_master_shp_file = Path(mgrs_grid_file_dir, "mgrs_s2_master.shp")
 
     shapefile_driver = ogr.GetDriverByName("ESRI Shapefile")
 
@@ -480,7 +480,7 @@ def find_mgrs_gzd_intersections(wkt_footprint):
 
     feature_count = layer.GetFeatureCount()
     layerDefinition = layer.GetLayerDefn()
-
+    print('HELLO')
     for i in range(layerDefinition.GetFieldCount()):
         print(layerDefinition.GetFieldDefn(i).GetName())
 
@@ -493,8 +493,9 @@ def find_mgrs_gzd_intersections(wkt_footprint):
 
         if not intersect_result.IsEmpty():
             print("FOUND INTERSECT")
-            print(f.GetField("gzd"))
-            intersect_list.append(f.GetField("gzd"))
+            
+            print(f.GetField("utm_zone"))
+            intersect_list.append(f.GetField("utm_zone"))
 
     return intersect_list
 
@@ -533,9 +534,9 @@ def find_mgrs_intersection_100km(footprint, gzd):
 
     polygon_geom = ogr.CreateGeometryFromWkt(footprint)
 
-    zip_name = f"MGRS_100kmSQ_ID_{gzd}.zip"
-    file_name_stem = f"MGRS_100kmSQ_ID{gzd}"
-    full_zip_path = Path(GRID_DIR, "MGRS_100kmSQ_ID", zip_name)
+    zip_name = f"{gzd}.zip"
+    file_name_stem = f"{gzd}"
+    full_zip_path = Path(GRID_DIR, "MGRS_S2", zip_name)
 
     # 1. unzip
     file_name_stem = unzip_mgrs_100km_shp(full_zip_path)
@@ -563,8 +564,8 @@ def find_mgrs_intersection_100km(footprint, gzd):
 
         if not intersect_result.IsEmpty():
             print("FOUND INTERSECT")
-            print(f.GetField("100kmSQ_ID"))
-            intersect_list.append(f'{gzd}{f.GetField("100kmSQ_ID")}')
+            print(f.GetField("name"))
+            intersect_list.append(f'{gzd}{f.GetField("name")}')
 
     # all done!
     grid_ds = None

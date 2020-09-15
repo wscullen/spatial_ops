@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='spatial_ops',
-      version='0.0.1',
+      version='0.0.2',
       description='Utilities for downloading Landsat and Sentinel products from USGS',
       url='https://github.com/sscullen/landsat_downloader.git',
       author='Shaun Cullen',

@@ -73,15 +73,20 @@ def get_wkt_from_shapefile(shp_path):
     # Create the feature and set values
     in_layer = input_ds.GetLayer()
 
-    multipoly = ogr.Geometry(ogr.wkbMultiPolygon)
+    multipoly = None
+    multipoint = None
+    multiline = None
 
     for feature in in_layer:
-        print(feature.GetGeometryRef().GetGeometryName())
         geom = feature.GetGeometryRef()
         geom.FlattenTo2D()
-        geom_type = geom.GetGeometryName()
+        geom_name = geom.GetGeometryName()
+        print(geom_name)
 
-        if geom_type == "POLYGON":
+        if geom_name == "POLYGON":
+            if not multipoly:
+                multipoly = ogr.Geometry(ogr.wkbMultiPolygon)
+            
             # print(feature.GetGeometryRef().Simplify(0.005).ConvexHull())
             print(feature.GetGeometryRef().Simplify(0.005))
             simplified_convex_hull = feature.GetGeometryRef().Simplify(0.005)
@@ -94,18 +99,37 @@ def get_wkt_from_shapefile(shp_path):
                 print(simplified_convex_hull)
                 multipoly.AddGeometry(simplified_convex_hull)
 
-        elif geom_type == "MULTIPOLYGON":
+        elif geom_name == "MULTIPOLYGON":
+            if not multipoly:
+                multipoly = ogr.Geometry(ogr.wkbMultiPolygon)
+            
             for geom_part in geom:
                 if geom_part.GetGeometryName() == "POLYGON":
                     multipoly.AddGeometry(geom_part)
                 else:
                     print("unknown geom")
                     print(geom_part.GetGeometryName())
+        elif geom_name == "POINT":
+            if not multipoint:
+                multipoint = ogr.Geometry(ogr.wkbMultiPoint)
+            
+            multipoint.AddGeometry(geom)
+        elif geom_name == "LINESTRING":
+            if not multiline:
+                multiline = ogr.Geometry(ogr.wkbMultiLineString)
+            
+            multiline.AddGeometry(geom)
 
-    cascade_union = multipoly.UnionCascaded()
-    print(cascade_union)
+    if multipoly:
+        cascade_union = multipoly.UnionCascaded()
+        print(cascade_union)
 
-    wkt_geometry = cascade_union.ExportToWkt()
+        wkt_geometry = cascade_union.ExportToWkt()
+    elif multipoint:
+        wkt_geometry = multipoint.ExportToWkt()
+    
+    elif multiline:
+        wkt_geometry = multiline.ExportToWkt()
 
     return wkt_geometry
 

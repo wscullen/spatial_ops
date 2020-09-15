@@ -532,6 +532,35 @@ class Converter:
         else:
             return True
 
+    def shapefile_to_geojson(self, path_to_shapefile):
+        driver = ogr.GetDriverByName("ESRI Shapefile")
+        shapefile_ds = driver.Open(path_to_shapefile, 0)
+
+        layer = shapefile_ds.GetLayer()
+
+        geojson_string = None
+
+        for feature in layer:
+            geom = feature.GetGeometryRef()
+            geojson_string = geom.ExportToJson()
+
+        return geojson_string
+
+    def shapefile_to_wkt(self, path_to_shapefile):
+        driver = ogr.GetDriverByName("ESRI Shapefile")
+        shapefile_ds = driver.Open(path_to_shapefile, 0)
+
+        layer = shapefile_ds.GetLayer()
+
+        wkt_string = None
+
+        for feature in layer:
+            geom = feature.GetGeometryRef()
+            wkt_string = geom.ExportToWkt()
+
+        return wkt_string
+
+
 
 if __name__ == '__main__':
     pass

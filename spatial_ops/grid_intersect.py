@@ -61,7 +61,7 @@ def unzip_mgrs_100km_shp(full_zip_path):
     return file_name_stem
 
 
-def get_wkt_from_shapefile(shp_path):
+def get_geom_from_shapefile(shp_path):
     """
     Open shapefile, simplify, merge, create and return WKT version of geometry.
     """
@@ -124,14 +124,28 @@ def get_wkt_from_shapefile(shp_path):
         cascade_union = multipoly.UnionCascaded()
         print(cascade_union)
 
-        wkt_geometry = cascade_union.ExportToWkt()
+        return cascade_union
     elif multipoint:
-        wkt_geometry = multipoint.ExportToWkt()
+        return multipoint
     
     elif multiline:
-        wkt_geometry = multiline.ExportToWkt()
+        return multiline
 
-    return wkt_geometry
+
+def get_wkt_from_shapefile(shp_path):
+    """
+    Open shapefile, simplify, merge, create and return WKT version of geometry.
+    """
+
+    geometry = get_geom_from_shapefile(shp_path)
+
+    return geometry.ExportToWkt()
+
+def get_geojson_from_shapefile(shp_path):
+
+    geometry = get_geom_from_shapefile(shp_path)
+
+    return geometry.ExportToJson()
 
 
 def get_wkt_for_wrs_tile(wrs_tile_pathrow):

@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 pylint = "*"
-gdal = {path = "C:/Users/cullens/Downloads/GDAL-2.3.3-cp37-cp37m-win_amd64.whl"}
+gdal = {path = "C:/Users/shaun/Downloads/GDAL-2.4.1-cp38-cp38-win_amd64.whl"}
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"

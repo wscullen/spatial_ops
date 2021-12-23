@@ -2,7 +2,7 @@ astroid==2.9.*; python_version ~= '3.6'
 
 colorama==0.4.*; sys_platform == 'win32'
 
-isort==5.10.*; python_full_version >= '3.6.1' and python_version < '4.0'
+isort==4.*; python_full_version >= '3.6.1' and python_version < '4.0'
 
 lazy-object-proxy==1.7.*; python_version >= '3.6'
 
